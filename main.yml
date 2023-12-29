@@ -1,5 +1,5 @@
 - name: Fedora setup
-- hosts: all
+  hosts: all
 
   vars_files:
     - user.yml
@@ -91,7 +91,7 @@
 
     - name: Clone Neovim kickstart
       ansible.builtin.git:
-        repo: https://github.com/nvim-lua/kickstart.nvim.git
+        repo: 'https://github.com/nvim-lua/kickstart.nvim.git'
         dest: '/home/{{ user.name }}/.config/nvim'
         single_branch: true
         version: master
