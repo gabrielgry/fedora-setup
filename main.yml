@@ -1,0 +1,98 @@
+- name: Fedora setup
+- hosts: all
+
+  vars_files:
+    - user.yml
+
+  tasks:
+    - name: Get Systemd default target
+      ansible.builtin.command: 'systemctl get-default'
+      register: systemd_get_default_target
+      changed_when: false
+
+    - name: Set Systemd default target to graphical
+      ansible.builtin.command: 'systemctl set-default graphical.target'
+      register: systemd_set_default_target
+      when: "'graphical.target' not in systemd_get_default_target.stdout"
+      changed_when: "'graphical.target' in systemd_set_default_target.stdout"
+      become: true
+
+    - name: Install Distribution GPG keys
+      ansible.builtin.dnf:
+        name: distribution-gpg-keys
+        state: present
+      become: true
+
+    - name: Import RPM Fusion GPG keys
+      ansible.builtin.rpm_key:
+        key: 'usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-{{ item }}-fedora-{{ ansible_facts.distribution_major_version }}'
+        state: present
+      with_items:
+        - 'free'
+        - 'nonfree'
+      become: true
+
+    - name: Install RPM Fusion packages
+      ansible.builtin.dnf:
+        name: 'https://mirrors.rpmfusion.org/{{ item }}/fedora/rpmfusion-{{ item }}-release-{{ ansible_facts.distribution_major_version }}.noarch.rpm'
+      with_items:
+        - 'free'
+        - 'nonfree'
+      become: true
+
+    - name: Install basic packages
+      ansible.builtin.dnf:
+        name:
+          - '@base-x'
+          - '@hardware-support'
+        state: present
+      become: true
+
+    - name: Install guest desktop agents
+      ansible.builtin.dnf:
+        name: '@guest-desktop-agents'
+        state: present
+      when: ansible_facts.virtualization_role == 'guest'
+      become: true
+
+    - name: Install desktop packages
+      ansible.builtin.dnf:
+        name:
+          - lightdm-gtk
+          - i3
+          - alacritty
+          - rofi
+        state: present
+      become: true
+
+    - name: Enable LightDM service
+      ansible.builtin.systemd:
+        name: lightdm
+        enabled: true
+      become: true
+
+    - name: Create user
+      ansible.builtin.user:
+        name: "{{ user.name }}"
+        comment: "{{ user.full_name }}"
+        groups: "wheel"
+        append: true
+        create_home: true
+        state: present
+      become: true
+
+    - name: Install Neovim
+      ansible.builtin.dnf:
+        name:
+          - neovim
+          - ripgrep
+        state: present
+      become: true
+
+    - name: Clone Neovim kickstart
+      ansible.builtin.git:
+        repo: https://github.com/nvim-lua/kickstart.nvim.git
+        dest: '/home/{{ user.name }}/.config/nvim'
+        single_branch: true
+        version: master
+        clone: true
