@@ -25,7 +25,7 @@
 
     - name: Import RPM Fusion GPG keys
       ansible.builtin.rpm_key:
-        key: 'usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-{{ item }}-fedora-{{ ansible_facts.distribution_major_version }}'
+        key: '/usr/share/distribution-gpg-keys/rpmfusion/RPM-GPG-KEY-rpmfusion-{{ item }}-fedora-{{ ansible_facts.distribution_major_version }}'
         state: present
       with_items:
         - 'free'
