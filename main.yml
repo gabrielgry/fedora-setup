@@ -5,11 +5,6 @@
     - user.yml
 
   tasks:
-    - name: Update system
-      ansible.builtin.dnf:
-        name: '*'
-        state: latest
-      become: true
 
     - name: Get Systemd default target
       ansible.builtin.command: 'systemctl get-default'
@@ -21,6 +16,21 @@
       register: systemd_set_default_target
       when: "'graphical.target' not in systemd_get_default_target.stdout"
       changed_when: "'graphical.target' in systemd_set_default_target.stdout"
+      become: true
+
+    - name: Configure dnf
+      community.general.ini_file:
+        path: /etc/dnf/dnf.conf
+        section: main
+        option: max_parallel_downloads
+        value: 10
+        state: present
+      become: true
+
+    - name: Update system
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
       become: true
 
     - name: Install Distribution GPG keys
