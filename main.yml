@@ -24,6 +24,7 @@
         section: main
         option: max_parallel_downloads
         value: 10
+        no_extra_spaces: true
         state: present
       become: true
 
