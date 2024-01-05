@@ -80,6 +80,7 @@
           - alacritty
           - rofi
           - firefox
+          - xrandr
         state: present
       become: true
 
