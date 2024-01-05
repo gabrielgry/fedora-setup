@@ -5,6 +5,12 @@
     - user.yml
 
   tasks:
+    - name: Update system
+      ansible.builtin.dnf:
+        name: '*'
+        state: latest
+      become: true
+
     - name: Get Systemd default target
       ansible.builtin.command: 'systemctl get-default'
       register: systemd_get_default_target
