@@ -1,3 +1,7 @@
 user:
   name: gabriel
   full_name: "Gabriel Grysuk"
+
+git:
+  name: '{{ user.full_name }}'
+  email: 'Z2FicmllbGdyeXN1a0BnbWFpbC5jb20='
