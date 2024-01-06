@@ -98,7 +98,8 @@
 
     - name: Add 1Password repository
       ansible.builtin.yum_repository:
-        name: 1Password Stable Channel
+        name: 1password
+        description: 1Password Stable Channel
         baseurl: 'https://downloads.1password.com/linux/rpm/stable/$basearch'
         enabled: true
         gpgcheck: true
