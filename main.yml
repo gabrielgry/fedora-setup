@@ -110,7 +110,7 @@
     - name: Install 1Password
       ansible.builtin.dnf:
         name:
-          - 1password-cli
+          - 1password
         state: present
       become: true
 
