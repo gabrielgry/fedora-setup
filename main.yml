@@ -118,6 +118,16 @@
         mode: '0644'
       become: true
 
+    - name: Generate git Config
+      ansible.builtin.template:
+        src: gitconfig.j2
+        dest: '/home/{{ user.name }}/.gitconfig'
+        owner: '{{ user.name }}'
+        group: '{{ user.name }}'
+        mode: '0644'
+      become: true
+
+
     - name: Install Neovim
       ansible.builtin.dnf:
         name:
