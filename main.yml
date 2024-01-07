@@ -4,6 +4,27 @@
   vars_files:
     - user.yml
 
+  # vars_prompt:
+  #   - name: onepassword_subdomain
+  #     prompt: Enter 1Password subdomain
+  #     private: true
+  #     confirm: true
+
+  #   - name: onePassword_email
+  #     prompt: Enter 1Password email
+  #     private: true
+  #     confirm: true
+
+  #   - name: onepassword_access_key
+  #     prompt: Enter 1Password access key
+  #     private: true
+  #     confirm: true
+
+  #   - name: onepassword_master_password
+  #     prompt: Enter 1Password master password
+  #     private: true
+  #     confirm: true
+
   tasks:
 
     - name: Get Systemd default target
@@ -119,8 +140,8 @@
       community.general.onepassword_info:
         search_terms:
           - name: PC User
-          - field: username
-          - vault: Personal
+            field: username
+            vault: Personal
       register: onepassword_test
 
     - name: Print onepassword_test
