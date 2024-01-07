@@ -111,8 +111,21 @@
       ansible.builtin.dnf:
         name:
           - 1password
+          - 1password-cli
         state: present
       become: true
+
+    - name: Try to get PC User from 1Password
+      community.general.onepassword_info:
+        search_terms:
+          - name: PC User
+          - field: username
+          - vault: Personal
+      register: onepassword_test
+
+    - name: Print onepassword_test
+      ansible.builtin.debug:
+        var: onepassword_test
 
     - name: Create user
       ansible.builtin.user:
