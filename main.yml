@@ -8,7 +8,6 @@
     - name: onepassword_master_password
       prompt: Enter 1Password master password
       private: true
-      confirm: true
 
   tasks:
     - name: Get Systemd default target
@@ -146,7 +145,7 @@
         - name: Add 1Password account
           ansible.builtin.debug:
             var: lookup('community.general.onepassword',
-                section='PC User',
+                'PC User',
                 field='username',
                 subdomain='{{ onepassword_subdomain }}',
                 master_password='{{ onepassword_master_password }}',
@@ -156,7 +155,7 @@
     - name: Login 1Password account
       ansible.builtin.debug:
         var: lookup('community.general.onepassword',
-            section='PC User',
+            'PC User',
             field='username',
             master_password='{{ onepassword_master_password }}')
 
