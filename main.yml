@@ -147,7 +147,7 @@
           ansible.builtin.debug:
             var: lookup('community.general.onepassword',
                 section='PC User',
-                field=username,
+                field='username',
                 subdomain='{{ onepassword_subdomain }}',
                 master_password='{{ onepassword_master_password }}',
                 username='{{ onepassword_email }}',
@@ -157,7 +157,7 @@
       ansible.builtin.debug:
         var: lookup('community.general.onepassword',
             section='PC User',
-            field=username,
+            field='username',
             master_password='{{ onepassword_master_password }}')
 
     - name: Create user
