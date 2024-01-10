@@ -125,7 +125,7 @@
       changed_when: false
 
     - name: Get 1Password credentials
-      when: onepassword_account_list == ""
+      when: onepassword_account_list.stdout == ""
       block:
         - name: Get 1Password domain
           ansible.builtin.pause:
