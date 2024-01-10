@@ -144,25 +144,21 @@
           register: onepassword_secret_key
 
         - name: Add 1Password account
-          community.general.onepassword_info:
-            auto_login:
-              subdomain: '{{ onepassword_subdomain }}'
-              username: '{{ onepassword_email }}'
-              secret_key: '{{ onepassword_secret_key }}'
-              master_password: '{{ onepassword_master_password }}'
-            search_terms:
-              - name: 'PC User'
-                field: 'username'
-          no_log: true
+          ansible.builtin.debug:
+            var: lookup('community.general.onepassword',
+                section='PC User',
+                field=username,
+                subdomain='{{ onepassword_subdomain }}',
+                master_password='{{ onepassword_master_password }}',
+                username='{{ onepassword_email }}',
+                secret_key='{{ onepassword_secret_key }}')
 
     - name: Login 1Password account
-      community.general.onepassword_info:
-        auto_login:
-          master_password: '{{ onepassword_master_password }}'
-        search_terms:
-          - name: 'PC User'
-            field: 'username'
-      no_log: true
+      ansible.builtin.debug:
+        var: lookup('community.general.onepassword',
+            section='PC User',
+            field=username,
+            master_password='{{ onepassword_master_password }}')
 
     - name: Create user
       ansible.builtin.user:
