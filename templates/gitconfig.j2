@@ -1,3 +1,10 @@
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /opt/1Password/op-ssh-sign
+[commit]
+	gpgsign = true
 [user]
-    name = {{ git.name }}
-    email = {{ git.email | b64decode }}
+	signingKey = {{ lookup('community.general.onepassword', section='Github SSH Auth', field='public key') }}
+    name = {{ lookup('community.general.onepassword', section=Github, field=name) }}
+    email = {{ lookup('community.general.onepassword', section=Github, field=username) }}
